@@ -13,21 +13,36 @@ struct QuizListView: View {
     // var quizzesModel: QuizzesModel // si no lo herda de enviroment sino como parametro
     // para que lo herede del entorno lo tiene que heredar de esta manerea:
     @Environment (QuizzesModel.self) var quizzesModel
+    @Environment (ScoresModel.self) var scoresModel
     @Environment (\.colorScheme) var colorScheme
     //@Environment (ScoresModel.self) var scoresModel
     // @Environment (QuizzesModel.self) var quizzesModel: QuizzesModel
 
+    @State var errorMsg = "" {
+            didSet {
+                showErrorMsgAlert = true
+            }//Cuando cambie errorMsg que se ponga a true, es un observador y asi no hace falta ponerlo a true a lo largo de la práctia
+        }
+    @State var showErrorMsgAlert = false
+
+    @State var showAll = true
+    
     var body: some View {
         
         NavigationStack{
-                
+            
                 List {
+                    Toggle("Ver todos", isOn:
+                                    $showAll)
                     ForEach(quizzesModel.quizzes){quizItem in
-                        NavigationLink {
-                            QuizItemPlayView(quizItem: quizItem)
-                        } label: {
-                            QuizItemRowView(quizItem: quizItem)
-                            
+                        if showAll || scoresModel.pendiente(quizItem) {
+                        //if showAll || quizItem.pendiente(quizItem) {
+                            NavigationLink {
+                                QuizItemPlayView(quizItem: quizItem)
+                            } label: {
+                                QuizItemRowView(quizItem: quizItem)
+                                
+                            }
                         }
                     }
                     .listRowBackground(Color.cPrincipal)
@@ -56,20 +71,39 @@ struct QuizListView: View {
                     }
                 }
             }
+            .navigationBarItems( // Boton de refrescar
+                leading: Text("Record"),
+                trailing: Button(action:{
+                    Task  {
+                        do { // para que no se descargue cada vez que se entra en la vista y pornga el error si se la pega
+                            try await quizzesModel.download() //try: porque la sentencia puede mandar errores
+                            scoresModel.cleanup()
+                        } catch {
+                            errorMsg = error.localizedDescription
+                        }
+                    }
+                }, label:{
+                    Label("Refrescar", systemImage: "arrow.counterclockwise")
+                })
+            )
 
             //.navigationBarTitle(Text("Today's Flavors", displayMode: .inline))
 
         
             
         }
-        .onAppear ( perform: {
-            guard quizzesModel.quizzes.count == 0 else {return}
-            quizzesModel.load()
-        })
-        .background(Color.green)
-        //.background(Color.cFou.edgesIgnoringSafeArea(.all))
-        //.padding()
-        
+        .alert("Erroor", isPresented: $showErrorMsgAlert) {
+            } message: { Text(errorMsg)
+            }
+        .task  {
+            do { // para que no se descargue cada vez que se entra en la vista y pornga el error si se la pega
+                guard quizzesModel.quizzes.count == 0 else {return}
+                try await quizzesModel.download() //try: porque la sentencia puede mandar errores
+            } catch {
+                errorMsg = error.localizedDescription
+            }
+        }
+        .background(Color.cFou.edgesIgnoringSafeArea(.all))
     }
     
         

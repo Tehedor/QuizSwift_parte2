@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+struct CkeckResponseItem: Codable{
+    
+    let quizId: Int
+    let response: String
+    let result: Bool
+
+}

@@ -11,13 +11,24 @@ import Foundation
 
     var acertadas: Set<Int> = []
 
+    // ya no se usa 
     func check(quizItem: QuizItem, answer: String) {
 
-        if answer =+-= quizItem.answer  {
-        // if answer == quizItem.answer  {
-            acertadas.insert(quizItem.id)
-        }
-        // return acertadas
+        //if answer =+-= quizItem.answer  {
+        //    acertadas.insert(quizItem.id)
+        //}
+    }
+    
+    func add(quizItem: QuizItem){
+        acertadas.insert(quizItem.id)
+    }
+    
+    func cleanup() {
+        acertadas = []
+    }
+    
+    func pendiente(_ quizItem: QuizItem) -> Bool {
+        return !acertadas.contains(quizItem.id)
     }
 
 // Añadir label para poner un icono al lado de los puntos en QuizItemPlay

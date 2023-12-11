@@ -8,17 +8,32 @@
 import SwiftUI
 
 struct QuizItemPlayView: View {
+    @Environment(QuizzesModel.self) var quizzesModel
+    
     // @Environment (./verticalSizeClase') var verticalSizeClase
     @Environment(\.verticalSizeClass) var verticalSizeClass
     @Environment (ScoresModel.self) var scoresModel
     // @Environment (ScoresModel.self) var scoresModel
     // @EnvironmentObject (ScoresModel.self) var scoresModel
 
+    
     var quizItem: QuizItem
 
     @State var answer: String = ""
 
     @State var showCheckAlert = false
+    
+    @State var errorMsg = "" {
+        didSet{ //no se si es didlet
+            showErrorMsgAlert = true
+        }
+    }
+
+    @State var showErrorMsgAlert = false
+
+    @State var chekingResponse = false
+            
+    @State var answerIsOk = false
 
     var body: some View {
 
@@ -55,6 +70,10 @@ struct QuizItemPlayView: View {
                         Spacer()
                         autor
                     }
+                }
+                .alert("Resultado", isPresented: $showCheckAlert){
+                }message: {
+                    Text("Buena")
                 }
             }
         }
@@ -93,24 +112,24 @@ struct QuizItemPlayView: View {
                TextField("Introduce tu respuesta", text: $answer)
                    .textFieldStyle(.roundedBorder)
                    .onSubmit {
-                       showCheckAlert = true
+                       Task {
+                           await checkResponse()
+                       }
+                       //showCheckAlert = true
                    }
-                   // .keyboardType(.numberPad)
-
-               Button("Check") {
-
-                   // answer =+-= quizItem.answer
-                  showCheckAlert = true
-                  scoresModel.check(quizItem: quizItem, answer: answer)
-
+               if chekingResponse {
+                   ProgressView()
+               }else {
+                   Button("Comprobar"){
+                       //await checkResponse()
+                   }
                }
-               .padding()
            }
            .alert("Resultado" ,isPresented: $showCheckAlert) {
                // Si no pones un botton te pone uno por defecto con ok dentro
            } message: {
                // Text(answer == quizItem.answer ? "Correcto" : "Ere un pelele")
-               Text(answer =+-= quizItem.answer ? "Correcto" : "Ere un pelele")
+               Text(answerIsOk ? "Correcto" : "Ere un pelele")
            }
        }
 
@@ -120,9 +139,21 @@ struct QuizItemPlayView: View {
                    .font(.title)
                    .fontWeight(.bold)
                Spacer()
-               Image(quizItem.favourite ? "star_yellow" : "estrella_blanca")
-                   .resizable()
-                   .frame(width: 20, height: 20)
+               Button{
+                   Task{ // Al poner una funcion asincrona
+                       do {
+                           try await  quizzesModel.toggleFavourite(quizItem: quizItem)
+                        } catch {
+                            errorMsg = error.localizedDescription
+                        }
+
+                    }
+               }label: {
+                   Image(quizItem.favourite ? "star_yellow" : "estrella_blanca")
+                       .resizable()
+                       .frame(width: 20, height: 20)
+               }
+               
            }
 
        }
@@ -163,14 +194,49 @@ struct QuizItemPlayView: View {
                     }
                 .shadow(color: .black, radius: 5, x: 0.0, y: 0.0)
                    // Poner la imagen a la derecha
+                .contextMenu (menuItems:{
+                    Button{
+                        answer = ""
+                    } label: {
+                        Label("Limpiar", systemImage: "x.circle")
+                    }
+                    Button{
+                        answer = "pepe" //Aqui tendremos que poner la solución
+                    } label: {
+                        Label("Solución", systemImage: "figura.kickboxing")
+                    }
+                })
+                Text("Autor: \(quizItem.author?.username ?? "Anónimo")")
            }
        }
+    func checkResponse() async  {
+                
+        do{
+            chekingResponse = true
+                
+            answerIsOk = try await quizItem.check(quizItem: quizItem, answer: answer)
+                
+            showCheckAlert = true
+
+            if answerIsOk {
+                scoresModel.add(quizItem: quizItem)
+            }
+                    
+            chekingResponse = false
+
+            } catch {
+                errorMsg = error.localizedDescription
+            }
+            return ok
+        }
+    
+    
 
    }
    #Preview {
        let qm =  QuizzesModel()
            // var m = QuizzesModel()
-       qm.load()
+       qm.download()
        let sm = ScoresModel()
 
 

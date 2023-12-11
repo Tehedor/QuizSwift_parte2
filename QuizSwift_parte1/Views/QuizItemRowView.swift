@@ -10,25 +10,8 @@ import SwiftUI
 struct QuizItemRowView: View {
     var quizItem: QuizItem
         var body: some View {
-            //Image(quizItem.favourite ? "star_yellow" : "star_gray")
-            //Image(quizItem.favourite ? "star_yellow" : "star_gray")
-            // Imagen quiz
 
-            //HStack( spacing: 20) {
-            // HStack(alignment: .center, spacing: 20) {
-
-
-
-                // AsyncImage(url: ( quizItem.attachment?.url))
-                //     .frame(width: 200, height: 80)
-                //     .clipped()
-                //     .border(Color.black, width: 3)
-                //     .clipShape(Circle())
-
-            
                 HStack (alignment: .center) {
-               
-                    
                     ZStack{
                         
                         EasyAsyncImage(url: quizItem.attachment?.url)
@@ -69,9 +52,6 @@ struct QuizItemRowView: View {
                 }
                 
 
-                
-
-
             }
             //.background(Color.cPrincipal)
             //.preferredColorScheme(UIColor(named: "CSec"))
@@ -82,12 +62,36 @@ struct QuizItemRowView: View {
 #Preview {
     var model: QuizzesModel = {
             let m = QuizzesModel()
-            m.load()
+            m.download()
             return m
-        } ()
-    return QuizItemRowView(quizItem: model.quizzes[0])
-        // return NavigationStack {
-        //     QuizItemPlayView(quizItem: model.quizzes[0])
-        // }
-        // return QuizzItemPlayView(quizItem: model.quizzes[0])
+       } ()
+    //return QuizItemRowView(quizItem: model.quizzes[0])
+        return NavigationStack {
+             QuizItemPlayView(quizItem: model.quizzes[0])
+        }
+      //  return QuizzItemPlayView(quizItem: model.quizzes[0])
 }
+
+//#Preview {
+
+//    @State var model = QuizzesModel()
+//    @State var em = "kkkS"
+
+//    Task {
+//        do {
+//            try? await model.download()
+//        } catch {
+//            em = error.localizedDescription
+//        }
+        
+//    }
+
+//    if model.quizzes.count == 0{
+        //return Text("Vacio")
+        //return "Vacio"
+//    }else {
+
+//        return QuizItemRowView(quizItem: model.quizzes?[0])
+//    }
+
+//}

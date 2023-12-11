@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct FavoriteSatusItem: Codable {
+    let id: Int
+    let favourite: Bool
+}

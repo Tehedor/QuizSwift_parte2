@@ -24,6 +24,9 @@
 		1719FAC92B0E2EFB0093F456 /* QuizItemRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1719FAC82B0E2EFB0093F456 /* QuizItemRowView.swift */; };
 		1719FACB2B0E2F370093F456 /* QuizItemPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1719FACA2B0E2F370093F456 /* QuizItemPlayView.swift */; };
 		1719FACF2B0E45F60093F456 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1719FACE2B0E45F60093F456 /* Launch Screen.storyboard */; };
+		17EEA3212B276DA30080B5CA /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EEA3202B276DA30080B5CA /* Endpoints.swift */; };
+		17EEA3232B276DFE0080B5CA /* CheckResponseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EEA3222B276DFE0080B5CA /* CheckResponseItem.swift */; };
+		17EEA3252B276E420080B5CA /* FavoriteSatusItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17EEA3242B276E420080B5CA /* FavoriteSatusItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +68,9 @@
 		1719FAC82B0E2EFB0093F456 /* QuizItemRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizItemRowView.swift; sourceTree = "<group>"; };
 		1719FACA2B0E2F370093F456 /* QuizItemPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizItemPlayView.swift; sourceTree = "<group>"; };
 		1719FACE2B0E45F60093F456 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		17EEA3202B276DA30080B5CA /* Endpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
+		17EEA3222B276DFE0080B5CA /* CheckResponseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckResponseItem.swift; sourceTree = "<group>"; };
+		17EEA3242B276E420080B5CA /* FavoriteSatusItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteSatusItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,7 +171,8 @@
 		1719FAB52B0E290C0093F456 /* Quizzes */ = {
 			isa = PBXGroup;
 			children = (
-				1719FAB72B0E294C0093F456 /* QuizItem.swift */,
+				17EEA31F2B276C790080B5CA /* Endpoints */,
+				17EEA31E2B276C700080B5CA /* Codables */,
 				1719FAB82B0E294C0093F456 /* quizzes.json */,
 				1719FAB92B0E294C0093F456 /* QuizzesModel.swift */,
 			);
@@ -197,6 +204,24 @@
 				1719FACA2B0E2F370093F456 /* QuizItemPlayView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		17EEA31E2B276C700080B5CA /* Codables */ = {
+			isa = PBXGroup;
+			children = (
+				1719FAB72B0E294C0093F456 /* QuizItem.swift */,
+				17EEA3222B276DFE0080B5CA /* CheckResponseItem.swift */,
+				17EEA3242B276E420080B5CA /* FavoriteSatusItem.swift */,
+			);
+			path = Codables;
+			sourceTree = "<group>";
+		};
+		17EEA31F2B276C790080B5CA /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				17EEA3202B276DA30080B5CA /* Endpoints.swift */,
+			);
+			path = Endpoints;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -335,12 +360,15 @@
 				1719FABC2B0E294C0093F456 /* QuizzesModel.swift in Sources */,
 				1719FA8C2B0E27AB0093F456 /* ContentView.swift in Sources */,
 				1719FA8A2B0E27AB0093F456 /* QuizSwift_parte1App.swift in Sources */,
+				17EEA3252B276E420080B5CA /* FavoriteSatusItem.swift in Sources */,
 				1719FAC22B0E2A130093F456 /* EasyAsyncImage.swift in Sources */,
 				1719FAC72B0E2EC50093F456 /* QuizListView.swift in Sources */,
 				1719FABF2B0E29D80093F456 /* ScoresModel.swift in Sources */,
 				1719FAC92B0E2EFB0093F456 /* QuizItemRowView.swift in Sources */,
 				1719FACB2B0E2F370093F456 /* QuizItemPlayView.swift in Sources */,
 				1719FAC42B0E2AFE0093F456 /* Extensions.swift in Sources */,
+				17EEA3232B276DFE0080B5CA /* CheckResponseItem.swift in Sources */,
+				17EEA3212B276DA30080B5CA /* Endpoints.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
