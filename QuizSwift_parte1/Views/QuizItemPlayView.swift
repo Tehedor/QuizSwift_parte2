@@ -252,20 +252,21 @@ struct QuizItemPlayView: View {
     
 
    }
- //  #Preview {
- //      let qm =  QuizzesModel()
- //          // var m = QuizzesModel()
- //      qm.download()
- //      let sm = ScoresModel()
-//
-//
-//       // return QuizzItemPlayView(quizItem: model.quizzes[0])
-//       return NavigationStack {
-//           QuizItemPlayView(quizItem: qm.quizzes[4])
-//               .environment(sm)
-//       }
-//       // return QuizzItemPlayView(quizItem: model.quizzes[0])
-//   }
+/*
+ #Preview {
+      let qm =  QuizzesModel()
+           // var m = QuizzesModel()
+       qm.download()
+       let sm = ScoresModel()
+
+
+       // return QuizzItemPlayView(quizItem: model.quizzes[0])
+       return NavigationStack {
+           QuizItemPlayView(quizItem: qm.quizzes[4])
+               .environment(sm)
+       }
+       // return QuizzItemPlayView(quizItem: model.quizzes[0])
+}*/
 
 
 
@@ -275,14 +276,14 @@ struct QuizItemPlayView: View {
     @State var qm =  QuizzesModel()
         // var m = QuizzesModel()
     @State var em = "kkkS"
-    
+
     Task {
         do {
             try? await qm.download()
         } catch {
             em = error.localizedDescription
         }
-            
+
     }
     
     //qm.download()

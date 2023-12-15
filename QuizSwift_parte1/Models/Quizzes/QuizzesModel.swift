@@ -39,7 +39,7 @@ import Foundation
             guard let quizzes = try? JSONDecoder().decode([QuizItem].self, from: data)  else {
                         throw "Error: recibidos datos corruptos."
             }
-                    
+            
             self.quizzes = quizzes
             
             print("Quizzes cargados")
@@ -53,20 +53,32 @@ import Foundation
            guard let url = Endpoints.checkAnswer(quizItem:quizItem, answer: answer) else {
                throw "No puedo comprobar la respuesta"
            }
-           
+
            let (data, response) = try await URLSession.shared.data(from: url)
 
            guard (response as? HTTPURLResponse)?.statusCode == 200 else {
                throw "No bebes No quizzes"
            }
-        
-            guard let res = try? JSONDecoder().decode(CkeckResponseItem.self, from: data)  else {
+
+        /*
+        print(data)
+        let res = try? JSONDecoder().decode(CkeckResponseItem.self, from: data)
+        guard ((res?.result) != nil) else {
            //guard let res = try? JSONDecoder().decode(CheckResponseItem.self, from: data)  else {
                throw "Error: recibidos datos corruptos."
            }
-           
-           return res.result
-    }
+        */
+        var respuesta = false
+        
+        if let res = try? JSONDecoder().decode(CkeckResponseItem.self, from: data) {
+            respuesta = res.result
+        }
+        print("111111")
+        //print(res.result)
+        
+        return respuesta
+   
+         }
     
     func toggleFavourite(quizItem: QuizItem) async throws {
             guard let url = Endpoints.toggleFav(quizItem: quizItem) else {
