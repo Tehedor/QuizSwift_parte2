@@ -10,8 +10,17 @@ import Foundation
 @Observable class ScoresModel {
 
     var acertadas: Set<Int> = []
-
-    // ya no se usa 
+    var record: Set<Int> = []
+    
+    init() {
+        let a = UserDefaults.standard.object(forKey: "record") as? [Int] ?? []
+        
+        record = Set(a)
+        
+    }
+    
+    
+    // ya no se usa
     func check(quizItem: QuizItem, answer: String) {
 
         //if answer =+-= quizItem.answer  {
@@ -21,6 +30,14 @@ import Foundation
     
     func add(quizItem: QuizItem){
         acertadas.insert(quizItem.id)
+        
+        
+        record.insert(quizItem.id)
+        
+        UserDefaults.standard.set(Array(record), forKey: "record")
+        //UserDefaults.standard.sincronize()
+        
+        
     }
     
     func cleanup() {

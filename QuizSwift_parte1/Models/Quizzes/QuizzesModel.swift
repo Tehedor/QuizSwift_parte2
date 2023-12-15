@@ -12,6 +12,9 @@ import Foundation
     // Los datos
     private(set) var quizzes = [QuizItem]()
     
+    //private(set) var checkRespose = [CkeckResponseItem]()
+    
+    
     func download() async throws {
         do {
             // guard let jsonURL = Bundle.main.url(forResource: "quizzes", withExtension: "json") else {
@@ -44,6 +47,27 @@ import Foundation
             print(error.localizedDescription)
         }
     }
+    
+    func check(quizItem: QuizItem, answer: String) async throws -> Bool {
+           // Puedo poner todas  las guardas separadas por comas
+           guard let url = Endpoints.checkAnswer(quizItem:quizItem, answer: answer) else {
+               throw "No puedo comprobar la respuesta"
+           }
+           
+           let (data, response) = try await URLSession.shared.data(from: url)
+
+           guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+               throw "No bebes No quizzes"
+           }
+        
+            guard let res = try? JSONDecoder().decode(CkeckResponseItem.self, from: data)  else {
+           //guard let res = try? JSONDecoder().decode(CheckResponseItem.self, from: data)  else {
+               throw "Error: recibidos datos corruptos."
+           }
+           
+           return res.result
+    }
+    
     func toggleFavourite(quizItem: QuizItem) async throws {
             guard let url = Endpoints.toggleFav(quizItem: quizItem) else {
                 throw "No puedo comprobar la respuesta"

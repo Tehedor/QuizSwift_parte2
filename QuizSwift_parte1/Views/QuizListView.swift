@@ -72,7 +72,7 @@ struct QuizListView: View {
                 }
             }
             .navigationBarItems( // Boton de refrescar
-                leading: Text("Record"),
+                leading: Text("Record \(scoresModel.record.count)"),
                 trailing: Button(action:{
                     Task  {
                         do { // para que no se descargue cada vez que se entra en la vista y pornga el error si se la pega

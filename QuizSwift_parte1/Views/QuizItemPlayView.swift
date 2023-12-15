@@ -122,6 +122,7 @@ struct QuizItemPlayView: View {
                }else {
                    Button("Comprobar"){
                        //await checkResponse()
+                       // checkResponse()
                    }
                }
            }
@@ -157,10 +158,14 @@ struct QuizItemPlayView: View {
            }
 
        }
-       private var adjunto: some View{
+    
+    @State var scale = 1.0
+    
+    private var adjunto: some View{
            GeometryReader { g in
                EasyAsyncImage(url: quizItem.attachment?.url)
                    .saturation(showCheckAlert ? 0 : 1)
+                   
                    .rotationEffect(Angle(degrees:
                        showCheckAlert ? 180 : 0))
                    .animation(.easeInOut, value: showCheckAlert)
@@ -175,6 +180,18 @@ struct QuizItemPlayView: View {
                            .stroke(Color.cPrincipal, lineWidth: 2)
                    }
                    .shadow(color: .black, radius: 5, x: 0.0, y: 0.0)
+                   .scaleEffect(scale)
+                   .onTapGesture {
+                       let ac = "logrado"
+                       
+                       answer = ac
+                       
+                       withAnimation {
+                           scale = 1.5 - scale
+                       } completion: {
+                           scale = 1.5 - scale
+                       }
+                   }
            }
        }
     private var autor: some View {
@@ -214,8 +231,10 @@ struct QuizItemPlayView: View {
         do{
             chekingResponse = true
                 
-            answerIsOk = try await quizItem.check(quizItem: quizItem, answer: answer)
-                
+            //answerIsOk = try await quizzesModel.check(quizItem: quizItem, answer: answer)
+            
+            answerIsOk =  try await quizzesModel.check(quizItem: quizItem, answer: answer)
+            
             showCheckAlert = true
 
             if answerIsOk {
@@ -224,26 +243,56 @@ struct QuizItemPlayView: View {
                     
             chekingResponse = false
 
-            } catch {
+        } catch {
                 errorMsg = error.localizedDescription
-            }
-            return ok
         }
+    //return ok
+    }
     
     
 
    }
-   #Preview {
-       let qm =  QuizzesModel()
-           // var m = QuizzesModel()
-       qm.download()
-       let sm = ScoresModel()
+ //  #Preview {
+ //      let qm =  QuizzesModel()
+ //          // var m = QuizzesModel()
+ //      qm.download()
+ //      let sm = ScoresModel()
+//
+//
+//       // return QuizzItemPlayView(quizItem: model.quizzes[0])
+//       return NavigationStack {
+//           QuizItemPlayView(quizItem: qm.quizzes[4])
+//               .environment(sm)
+//       }
+//       // return QuizzItemPlayView(quizItem: model.quizzes[0])
+//   }
 
 
-       // return QuizzItemPlayView(quizItem: model.quizzes[0])
-       return NavigationStack {
-           QuizItemPlayView(quizItem: qm.quizzes[4])
-               .environment(sm)
-       }
-       // return QuizzItemPlayView(quizItem: model.quizzes[0])
-   }
+
+
+
+#Preview {
+    @State var qm =  QuizzesModel()
+        // var m = QuizzesModel()
+    @State var em = "kkkS"
+    
+    Task {
+        do {
+            try? await qm.download()
+        } catch {
+            em = error.localizedDescription
+        }
+            
+    }
+    
+    //qm.download()
+    @State var sm = ScoresModel()
+
+
+    // return QuizzItemPlayView(quizItem: model.quizzes[0])
+    return NavigationStack {
+        QuizItemPlayView(quizItem: qm.quizzes[4])
+            .environment(sm)
+    }
+    // return QuizzItemPlayView(quizItem: model.quizzes[0])
+}

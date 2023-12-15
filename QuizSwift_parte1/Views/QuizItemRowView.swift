@@ -59,39 +59,42 @@ struct QuizItemRowView: View {
         }
 //}
 
-#Preview {
-    var model: QuizzesModel = {
-            let m = QuizzesModel()
-            m.download()
-            return m
-       } ()
-    //return QuizItemRowView(quizItem: model.quizzes[0])
-        return NavigationStack {
-             QuizItemPlayView(quizItem: model.quizzes[0])
-        }
-      //  return QuizzItemPlayView(quizItem: model.quizzes[0])
-}
-
 //#Preview {
-
-//    @State var model = QuizzesModel()
-//    @State var em = "kkkS"
-
-//    Task {
-//        do {
-//            try? await model.download()
-//        } catch {
-//            em = error.localizedDescription
+//    let model: QuizzesModel = {
+//            let m = QuizzesModel()
+//            m.download()
+//            return m
+//       } ()
+//    //return QuizItemRowView(quizItem: model.quizzes[0])
+//        return NavigationStack {
+//             QuizItemPlayView(quizItem: model.quizzes[0])
 //        }
-        
-//    }
-
-//    if model.quizzes.count == 0{
-        //return Text("Vacio")
-        //return "Vacio"
-//    }else {
-
-//        return QuizItemRowView(quizItem: model.quizzes?[0])
-//    }
-
+//      //  return QuizzItemPlayView(quizItem: model.quizzes[0])
 //}
+
+#Preview {
+
+    @State var model = QuizzesModel()
+    @State var em = "kkkS"
+
+    Task {
+        do {
+            try? await model.download()
+        } catch {
+            em = error.localizedDescription
+        }
+        
+    }
+
+    if model.quizzes.count == 0{
+        return Text("Vacio")
+        //return "Vacio"
+    }else {
+        
+        //∫return QuizItemRowView(quizItem: model.quizzes[0])
+        return NavigationStack {
+                     QuizItemPlayView(quizItem: model.quizzes[0])
+        }
+    }
+
+}
