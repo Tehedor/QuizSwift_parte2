@@ -10,7 +10,7 @@ import Foundation
 struct CkeckResponseItem: Codable{
     
     let quizId: Int
-    let response: String
+    let answer: String
     let result: Bool
 
 }

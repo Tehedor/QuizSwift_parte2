@@ -238,8 +238,10 @@ struct QuizItemPlayView: View {
             showCheckAlert = true
 
             if answerIsOk {
+                print("ta bin")
                 scoresModel.add(quizItem: quizItem)
             }
+            print(answerIsOk)
                     
             chekingResponse = false
 

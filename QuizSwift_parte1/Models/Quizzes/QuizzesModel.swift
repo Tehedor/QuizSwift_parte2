@@ -60,24 +60,16 @@ import Foundation
                throw "No bebes No quizzes"
            }
 
-        /*
+        
         print(data)
-        let res = try? JSONDecoder().decode(CkeckResponseItem.self, from: data)
-        guard ((res?.result) != nil) else {
-           //guard let res = try? JSONDecoder().decode(CheckResponseItem.self, from: data)  else {
-               throw "Error: recibidos datos corruptos."
-           }
-        */
-        var respuesta = false
         
-        if let res = try? JSONDecoder().decode(CkeckResponseItem.self, from: data) {
-            respuesta = res.result
+        guard let res = try? JSONDecoder().decode(CkeckResponseItem.self, from: data) else {
+            throw "Error: recibidos datos corruptos."
+            //print("Error: recibidos datos corruptos.")
         }
-        print("111111")
-        //print(res.result)
+
+        return res.result
         
-        return respuesta
-   
          }
     
     func toggleFavourite(quizItem: QuizItem) async throws {
