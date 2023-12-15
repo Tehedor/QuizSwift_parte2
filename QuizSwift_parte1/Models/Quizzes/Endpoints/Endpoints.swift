@@ -32,7 +32,7 @@ struct Endpoints {
     }
 
     static func toggleFav(quizItem:  QuizItem) -> URL? {
-        // https://quiz.dit.upm.es/api/users/tokenOwner/favourites/2&token=3509f8010c0bfe8feed0
+        // https://quiz.dit.upm.es/api/users/tokenOwner/favourites/2?token=3509f8010c0bfe8feed0
         let path = "/api/users/tokenOwner/favourites/\(quizItem.id)"
     
         let str = "\(urlBase)\(path)?\(token)"
