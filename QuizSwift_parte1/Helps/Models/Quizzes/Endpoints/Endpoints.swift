@@ -19,9 +19,8 @@ struct Endpoints {
         let str = "\(urlBase)\(path)?token=\(token)"
         return URL(string: str)
     }
-
+    
     static func checkAnswer(quizItem: QuizItem, answer: String) -> URL? {
-    //static func checkAnswer(quizItem: QuizItem, answer: String) -> URL? {
         // https://quiz.dit.upm.es/api/quizzes/5/check?answer=moscow&token=3509f8010c0bfe8feed0
         let path = "/api/quizzes/\(quizItem.id)/check" // \() interpolación de swift \()
         
@@ -35,8 +34,15 @@ struct Endpoints {
         // https://quiz.dit.upm.es/api/users/tokenOwner/favourites/2?token=3509f8010c0bfe8feed0
         let path = "/api/users/tokenOwner/favourites/\(quizItem.id)"
     
-        let str = "\(urlBase)\(path)?\(token)"
-        
+        let str = "\(urlBase)\(path)?token=\(token)"
+        return URL(string: str)
+    
+    }
+    
+    static func showAnswer(quizItem:  QuizItem) -> URL? {
+        // https://quiz.dit.upm.es/api/users/tokenOwner/favourites/2?token=3509f8010c0bfe8feed0
+        let path = "/api/quizzes/\(quizItem.id)/answer"
+        let str = "\(urlBase)\(path)?token=\(token)"
         return URL(string: str)
     
     }
